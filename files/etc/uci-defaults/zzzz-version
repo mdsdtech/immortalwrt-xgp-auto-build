@@ -1,4 +1,0 @@
-#!/bin/sh
-sed -i '/DISTRIB_REVISION/d' /etc/openwrt_release
-sed -i '/DISTRIB_DESCRIPTION/d' /etc/openwrt_release
-echo "DISTRIB_DESCRIPTION='LEDE for XGPv3 '" >> /etc/openwrt_release

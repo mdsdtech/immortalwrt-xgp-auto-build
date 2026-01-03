@@ -22,6 +22,12 @@ zz_build_uuid=$(uuidgen)
 
 echo "zz_build_date=${zz_build_date}"
 echo "zz_build_uuid=${zz_build_uuid}"
+cat >> files/etc/uci-defaults/zzzz-version << EOF
+#!/bin/sh
+sed -i "1i ZZ_DISTRIB_NAME='ImmortalWrt for XGPv3'" /etc/openwrt_release
+sed -i "2i ZZ_DISTRIB_VERSION='R${year}.${month}.${day}.${hour}'" /etc/openwrt_release
+/bin/sync
+EOF
 echo "ZZ_BUILD_ID='${zz_build_uuid}'" > files/etc/zz_build_id
 echo "ZZ_BUILD_HOST='$(hostname)'" >> files/etc/zz_build_id
 echo "ZZ_BUILD_USER='$(whoami)'" >> files/etc/zz_build_id
