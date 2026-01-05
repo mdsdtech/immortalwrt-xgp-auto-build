@@ -178,4 +178,7 @@ uci -q set zz_config.@status[0].first_boot=0
 uci commit zz_config
 fi
 
+/etc/init.d/zz_screen_control.init enable
+/etc/init.d/zz_screen_control.init start
+
 exit 0
