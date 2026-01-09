@@ -126,17 +126,17 @@ uci commit qmodem_mwan
 uci set qmodem.wwan=modem-slot
 uci set qmodem.wwan.type='usb'
 uci set qmodem.wwan.slot='8-1'
-uci set qmodem.wwan.net_led='blue:net'
+uci set qmodem.wwan.net_led='blue:wan'
 uci set qmodem.wwan.alias='wwan'
 uci set qmodem.mpcie1=modem-slot
 uci set qmodem.mpcie1.type='pcie'
 uci set qmodem.mpcie1.slot='0001:11:00.0'
-uci set qmodem.mpcie1.net_led='blue:net'
+uci set qmodem.mpcie1.net_led='blue:wan'
 uci set qmodem.mpcie1.alias='mpcie1'
 uci set qmodem.mpcie2=modem-slot
 uci set qmodem.mpcie2.type='pcie'
 uci set qmodem.mpcie2.slot='0002:21:00.0'
-uci set qmodem.mpcie2.net_led='blue:net'
+uci set qmodem.mpcie2.net_led='blue:wan'
 uci set qmodem.mpcie2.alias='mpcie2'
 
 if lspci -nn | grep -q "105b:e0f5"; then
