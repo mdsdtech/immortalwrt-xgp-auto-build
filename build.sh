@@ -37,4 +37,12 @@ echo "ZZ_BUILD_IMM_HASH='$(git rev-parse HEAD)'" >> files/etc/zz_build_id
 
 MAKE_V=${1:-0}
 echo "make immortalwrt"
-make V=$MAKE_V -j$(nproc) || { echo "make failed"; exit 1; }
+make V=$MAKE_V -j$(nproc) || {
+    echo "make failed";
+    if [ "$MAKE_V" -eq 0 ]; then
+        echo "Retrying with make V=s -j1";
+        make V=s -j1 || { echo "Retry failed"; exit 1; }
+    else
+        exit 1;
+    fi
+}
