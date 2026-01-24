@@ -59,3 +59,8 @@ else
     ln -s ../../zz-packages package/zz-packages
     echo "Created symlink package/zz-packages -> ../../zz-packages"
 fi
+
+echo "Fix Rust build remove CI LLVM download"
+if [ -f "feeds/packages/lang/rust/Makefile" ]; then
+    sed -i 's/download-ci-llvm=true/download-ci-llvm=false/g' "feeds/packages/lang/rust/Makefile"
+fi
