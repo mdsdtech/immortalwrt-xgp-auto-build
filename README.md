@@ -8,6 +8,7 @@
 
 1. 通过转接板连接的 PCIe 5G 模块在刷机后需要断电（直接拔DC插头，拔市电那头要多等几秒电容放电）一次，否则大概率找不到模块，转接板硬件原因导致模块在重启时不能正常下电。
 2. 第一次使用本固件时，请使用 RKDevTool 刷入。请勿从其他固件的系统内直接升级到此固件，大概率会不兼容，包括同作者提供的 [LEDE 固件](https://github.com/zzzz0317/lede-xgp-auto-build/)。
+3. 没有使用 RKDevTool 的条件的话，从其它固件升级，请不要在页面中直接升级，可以尝试 `dd` 命令，先进入网页管理->系统->启动项，禁用 docker、qmodem、openclash、passwall 等不影响系统启动、联网的服务，然后重启，使用 SSH 连接设备，将刷机包传输至 `/tmp` 目录，然后使用 `gzip -d immortalWrt-nlnet_xiguapi-v3-xxxx-squashfs-sysupgrade.img.gz` 命令解压 `.img.gz` 格式的固件为 `.img`，然后执行 `dd if=/tmp/immortalWrt-nlnet_xiguapi-v3-xxxx-squashfs-sysupgrade.img of=/dev/mmcblk0 bs=4M oflag=direct`（注意替换文件名），显示 `XXX+0 records in XXX+0 records out` 并可以执行新命令后，不要执行任何操作，直接拔电源重启，大概率能成功，不成功就只能用 RKDevTool 救了，**非常不建议使用本方案**。
 
 ## 说明
 
