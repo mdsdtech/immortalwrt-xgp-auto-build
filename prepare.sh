@@ -28,6 +28,9 @@ echo "" >> feeds.conf
 # echo "src-git qmodem https://github.com/FUjr/QModem.git;main" >> feeds.conf
 echo "src-git qmodem https://github.com/zzzz0317/QModem.git;v2.8.11" >> feeds.conf
 echo "src-git istore https://github.com/linkease/istore;main" >> feeds.conf
+echo "src-git passwall2 https://github.com/Openwrt-Passwall/openwrt-passwall2.git;main" >> feeds.conf
+echo "src-git atcommands https://github.com/mdsdtech/luci-app-atcommands.git;custom" >> feeds.conf
+echo "src-git bypassk https://github.com/siropboy/luci-app-bypass.git;main" >> feeds.conf
 echo "update files"
 rm -rf files
 cp -r ../files .

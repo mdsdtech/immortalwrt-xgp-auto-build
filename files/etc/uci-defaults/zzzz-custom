@@ -7,7 +7,6 @@ uci add_list network.lan.ip6class='mpcie1v6'
 uci add_list network.lan.ip6class='mpcie2v6'
 uci add_list network.lan.ip6class='wwanv6'
 uci add_list network.lan.ip6class='wan6'
-uci set luci.main.lang='zh_cn'
 uci set luci.main.mediaurlbase='/luci-static/argon'
 uci add system led
 uci set system.@led[-1].name='system_status'
