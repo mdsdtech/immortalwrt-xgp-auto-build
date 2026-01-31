@@ -28,11 +28,11 @@ local release_info = parse_file("/etc/openwrt_release")
 </style>
 
 <fieldset class="cbi-section">
-    <h3>西瓜皮V3 固件信息</h3>
+    <h3>XiGuaPi Firmware Info</h3>
     <table id="zzversion" width="100%">
         <tr>
             <td width="33%" style="vertical-align:top">
-                <strong>版本</strong>
+                <strong>Version</strong>
             </td>
             <td>
                 <%= release_info.ZZ_DISTRIB_NAME or "🤍💙💜 GFriendWRT 🤍💙💜 by MDSDTech 🦅" %> <%= release_info.ZZ_DISTRIB_VERSION or "Development Version" %><br/>
@@ -41,21 +41,21 @@ local release_info = parse_file("/etc/openwrt_release")
         </tr>
         <tr>
             <td width="33%" style="vertical-align:top">
-                <strong>构建信息</strong>
+                <strong>Build Info</strong>
             </td>
             <td>
-                构建 ID: <%= build_info.ZZ_BUILD_ID or "N/A" %><br/>
-                构建日期: <%= build_info.ZZ_BUILD_DATE or "N/A" %><br/>
-                构建主机: <%= build_info.ZZ_BUILD_HOST or "N/A" %><br/>
-                构建用户: <%= build_info.ZZ_BUILD_USER or "N/A" %>
+                Build ID: <%= build_info.ZZ_BUILD_ID or "N/A" %><br/>
+                Data: <%= build_info.ZZ_BUILD_DATE or "N/A" %><br/>
+                Host: <%= build_info.ZZ_BUILD_HOST or "N/A" %><br/>
+                User: <%= build_info.ZZ_BUILD_USER or "N/A" %>
             </td>
         </tr>
         <tr>
             <td width="33%" style="vertical-align:top">
-                <strong>仓库哈希</strong>
+                <strong>Repository Hash</strong>
             </td>
             <td>
-                构建程序仓库: <%= build_info.ZZ_BUILD_REPO_HASH or "N/A" %><br/>
+                Repo Hash: <%= build_info.ZZ_BUILD_REPO_HASH or "N/A" %><br/>
                 ImmortalWrt: <%= build_info.ZZ_BUILD_IMM_HASH or "N/A" %>
             </td>
         </tr>

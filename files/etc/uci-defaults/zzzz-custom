@@ -139,32 +139,32 @@ fi
 uci commit qmodem
 echo "pcie_mhi mhi_mbim_enabled=1" > /etc/modules.d/90-pcie_mhi
 
-STOR_DEV_FIRST="/dev/mmcblk1p1"
-STOR_DEV_FIRST_MOUNT="/mnt/mmcblk1p1"
-STOR_DEV_SECOND="/dev/mmcblk0p3"
-STOR_DEV_SECOND_MOUNT="/mnt/mmcblk0p3"
-STOR_DEV_TO_MOUNT=""
-STOR_MOUNT_POINT=""
+# STOR_DEV_FIRST="/dev/mmcblk1p1"
+# STOR_DEV_FIRST_MOUNT="/mnt/mmcblk1p1"
+# STOR_DEV_SECOND="/dev/mmcblk0p3"
+# STOR_DEV_SECOND_MOUNT="/mnt/mmcblk0p3"
+# STOR_DEV_TO_MOUNT=""
+# STOR_MOUNT_POINT=""
 
-if [ -b "$STOR_DEV_FIRST" ]; then
-    STOR_DEV_TO_MOUNT="$STOR_DEV_FIRST"
-    STOR_MOUNT_POINT="$STOR_DEV_FIRST_MOUNT"
-elif [ -b "$STOR_DEV_SECOND" ]; then
-    STOR_DEV_TO_MOUNT="$STOR_DEV_SECOND"
-    STOR_MOUNT_POINT="$STOR_DEV_SECOND_MOUNT"
-fi
+# if [ -b "$STOR_DEV_FIRST" ]; then
+#     STOR_DEV_TO_MOUNT="$STOR_DEV_FIRST"
+#     STOR_MOUNT_POINT="$STOR_DEV_FIRST_MOUNT"
+# elif [ -b "$STOR_DEV_SECOND" ]; then
+#     STOR_DEV_TO_MOUNT="$STOR_DEV_SECOND"
+#     STOR_MOUNT_POINT="$STOR_DEV_SECOND_MOUNT"
+# fi
 
-if [ -n "$STOR_DEV_TO_MOUNT" ]; then
-    echo "mount persistent dev $STOR_DEV_TO_MOUNT to $STOR_MOUNT_POINT" >> /tmp/zz-init.log
-    mount "$STOR_DEV_TO_MOUNT" "$STOR_MOUNT_POINT"
-    echo "$STOR_DEV_TO_MOUNT $STOR_MOUNT_POINT auto defaults 0 2" >> /etc/fstab
-    uci set dockerd.globals.data_root="$STOR_MOUNT_POINT/docker/"
-    uci commit dockerd
-    sleep 2
-    /etc/init.d/dockerd restart
-else
-    echo "persistent dev not found" >> /tmp/zz-init.log
-fi
+# if [ -n "$STOR_DEV_TO_MOUNT" ]; then
+#     echo "mount persistent dev $STOR_DEV_TO_MOUNT to $STOR_MOUNT_POINT" >> /tmp/zz-init.log
+#     mount "$STOR_DEV_TO_MOUNT" "$STOR_MOUNT_POINT"
+#     echo "$STOR_DEV_TO_MOUNT $STOR_MOUNT_POINT auto defaults 0 2" >> /etc/fstab
+#     uci set dockerd.globals.data_root="$STOR_MOUNT_POINT/docker/"
+#     uci commit dockerd
+#     sleep 2
+#     /etc/init.d/dockerd restart
+# else
+#     echo "persistent dev not found" >> /tmp/zz-init.log
+# fi
 
 uci -q set zz_config.@status[0].first_boot=0
 uci commit zz_config

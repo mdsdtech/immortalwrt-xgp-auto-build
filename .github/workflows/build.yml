@@ -61,6 +61,7 @@ jobs:
       - name: Prepare release assets
         run: |
           mkdir -p release_assets
+          cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-ext4-sysupgrade.img.gz release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3.manifest release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/config.buildinfo release_assets/ || true
@@ -69,14 +70,6 @@ jobs:
           cp immortalwrt/bin/targets/rockchip/armv8/version.buildinfo release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/sha256sums release_assets/ || true
           bash -c "cd immortalwrt && git log -n 30" > release_assets/recent_git.log
-      - name: Build with istore
-        run: |
-          ./build-istore.sh
-      - name: Prepare istore release assets
-        run: |
-          mkdir -p release_assets
-          cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-with-istore-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/ || true
-          cp immortalwrt/bin/targets/rockchip/armv8/sha256sums release_assets/sha256sums-istore || true
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -121,21 +114,21 @@ jobs:
           RELEASE_DATE=$(date '+%Y-%m-%d %H:%M:%S')
           VERSION=$(cat release_assets/version.buildinfo | grep '^r' | head -n 1)
           echo "RELEASE_TITLE=${RELEASE_DATE} - ${VERSION}" >> $GITHUB_OUTPUT
-          image_prefix=immortalWrt-nlnet_xiguapi-v3-${current_date}${current_time}-
+          image_prefix=GFriendWRT-nlnet_xiguapi-v3-${current_date}${current_time}-
           echo "IMAGE_PREFIX=${image_prefix}" >> $GITHUB_OUTPUT
           cat release_header.md > release_info.md
           echo "" >> release_info.md
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
           if [ -n "$PREVIOUS_TAG" ]; then
               echo "<details>" >> release_info.md
-              echo "<summary>本仓库变更 (${PREVIOUS_TAG}..${new_tag})</summary>" >> release_info.md
+              echo "<summary>Changes (${PREVIOUS_TAG}..${new_tag})</summary>" >> release_info.md
               echo "" >> release_info.md
               git log --pretty=format:"%h %s" ${PREVIOUS_TAG}..HEAD >> release_info.md
               echo "" >> release_info.md
               echo "</details>" >> release_info.md
           fi
           echo "<details>" >> release_info.md
-          echo "<summary>ImmortalWrt最近变更</summary>" >> release_info.md
+          echo "<summary>GFriendWRT</summary>" >> release_info.md
           echo "" >> release_info.md
           echo "\`\`\`" >> release_info.md
           cat release_assets/recent_git.log >> release_info.md
@@ -143,7 +136,7 @@ jobs:
           echo "" >> release_info.md
           echo "</details>" >> release_info.md
           echo "<details>" >> release_info.md
-          echo "<summary>内置软件包列表</summary>" >> release_info.md
+          echo "<summary>List of built-in packages</summary>" >> release_info.md
           echo "" >> release_info.md
           echo "\`\`\`" >> release_info.md
           cat release_assets/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3.manifest >> release_info.md
@@ -151,7 +144,7 @@ jobs:
           echo "" >> release_info.md
           echo "</details>" >> release_info.md
           echo "<details>" >> release_info.md
-          echo "<summary>文件哈希</summary>" >> release_info.md
+          echo "<summary>File Hash</summary>" >> release_info.md
           echo "" >> release_info.md
           echo "\`\`\`" >> release_info.md
           cat release_assets/sha256sums >> release_info.md
@@ -164,13 +157,12 @@ jobs:
           git push origin ${{ steps.release-prepare.outputs.new_tag }}
       - name: Rename image
         run: |
+          mv release_assets/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-ext4-sysupgrade.img.gz release_assets/${{ steps.release-prepare.outputs.IMAGE_PREFIX }}ext4-sysupgrade.img.gz
           mv release_assets/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/${{ steps.release-prepare.outputs.IMAGE_PREFIX }}squashfs-sysupgrade.img.gz
-          mv release_assets/immortalwrt-with-istore-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/${{ steps.release-prepare.outputs.IMAGE_PREFIX }}istore-squashfs-sysupgrade.img.gz
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.release-prepare.outputs.new_tag }}
-          # tag_name: ${{ inputs.tag_name }}
           name: ${{ steps.release-prepare.outputs.RELEASE_TITLE }}
           body_path: release_info.md
           prerelease: true

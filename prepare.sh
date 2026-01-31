@@ -49,6 +49,28 @@ echo "add TD-TECH option id patch"
 cp ../999-add-TD-TECH-option-id.patch ./target/linux/rockchip/patches-6.6/999-add-TD-TECH-option-id.patch
 ls -lah ./target/linux/rockchip/patches-6.6/999-add-TD-TECH-option-id.patch
 
+# =================================================================
+# FIXED: Direct Clone for Alpha Reborn (Safest Method)
+# =================================================================
+echo "Adding Alpha Reborn Theme..."
+
+# 1. Define the destination directory inside package/
+THEME_DIR="package/custom/luci-theme-alpha-reborn"
+
+# 2. Clean up old version to ensure fresh clone
+rm -rf "$THEME_DIR"
+
+# 3. Create the parent directory if it doesn't exist
+mkdir -p "package/custom"
+
+# 4. Clone directly into the package structure
+# We clone to a specific folder so the Makefile ends up at:
+# package/custom/luci-theme-alpha-reborn/Makefile
+git clone --depth=1 https://github.com/derisamedia/luci-theme-alpha-reborn.git "$THEME_DIR" || { echo "Clone failed"; exit 1; }
+
+echo "Alpha Reborn added successfully."
+# =================================================================
+
 echo "update feeds"
 ./scripts/feeds update -a || { echo "update feeds failed"; exit 1; }
 echo "install feeds"
