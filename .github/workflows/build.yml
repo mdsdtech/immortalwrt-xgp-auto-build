@@ -61,7 +61,6 @@ jobs:
       - name: Prepare release assets
         run: |
           mkdir -p release_assets
-          # cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-ext4-sysupgrade.img.gz release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3.manifest release_assets/ || true
           cp immortalwrt/bin/targets/rockchip/armv8/config.buildinfo release_assets/ || true
@@ -157,7 +156,6 @@ jobs:
           git push origin ${{ steps.release-prepare.outputs.new_tag }}
       - name: Rename image
         run: |
-          # mv release_assets/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-ext4-sysupgrade.img.gz release_assets/${{ steps.release-prepare.outputs.IMAGE_PREFIX }}ext4-sysupgrade.img.gz
           mv release_assets/immortalwrt-rockchip-armv8-nlnet_xiguapi-v3-squashfs-sysupgrade.img.gz release_assets/${{ steps.release-prepare.outputs.IMAGE_PREFIX }}squashfs-sysupgrade.img.gz
       - name: Create release
         uses: softprops/action-gh-release@v2
