@@ -50,25 +50,29 @@ cp ../999-add-TD-TECH-option-id.patch ./target/linux/rockchip/patches-6.6/999-ad
 ls -lah ./target/linux/rockchip/patches-6.6/999-add-TD-TECH-option-id.patch
 
 # =================================================================
-# FIXED: Direct Clone for Alpha Reborn (Safest Method)
+# FIXED: Direct Clone for Custom Packages
 # =================================================================
-echo "Adding Alpha Reborn Theme..."
+echo "Adding Custom Packages..."
 
-# 1. Define the destination directory inside package/
+# 1. Define destination directories
 THEME_DIR="package/custom/luci-theme-alpha-reborn"
+APP_DIR="package/custom/luci-app-arwi-dashboard"
 
-# 2. Clean up old version to ensure fresh clone
+# 2. Clean up old versions
 rm -rf "$THEME_DIR"
+rm -rf "$APP_DIR"
 
-# 3. Create the parent directory if it doesn't exist
+# 3. Create parent directory
 mkdir -p "package/custom"
 
-# 4. Clone directly into the package structure
-# We clone to a specific folder so the Makefile ends up at:
-# package/custom/luci-theme-alpha-reborn/Makefile
-git clone --depth=1 https://github.com/derisamedia/luci-theme-alpha-reborn.git "$THEME_DIR" || { echo "Clone failed"; exit 1; }
+# 4. Clone directly
+# Theme
+git clone --depth=1 https://github.com/derisamedia/luci-theme-alpha-reborn.git "$THEME_DIR" || { echo "Theme clone failed"; exit 1; }
 
-echo "Alpha Reborn added successfully."
+# Dashboard App
+git clone --depth=1 https://github.com/derisamedia/luci-app-arwi-dashboard.git "$APP_DIR" || { echo "Dashboard clone failed"; exit 1; }
+
+echo "Custom packages added successfully."
 # =================================================================
 
 echo "update feeds"
