@@ -6,3 +6,9 @@
 	path = zz-packages/xgp-v3-screen
 	url = https://github.com/zzzz0317/xgp-v3-screen.git
 	branch = main
+[submodule "zz-packages/others/luci-app-bandix"]
+	path = zz-packages/others/luci-app-bandix
+	url = https://github.com/timsaya/luci-app-bandix.git
+[submodule "zz-packages/others/openwrt-bandix"]
+	path = zz-packages/others/openwrt-bandix
+	url = https://github.com/timsaya/openwrt-bandix.git
