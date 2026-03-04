@@ -5,7 +5,8 @@ free -h
 cat /proc/cpuinfo
 
 echo "update submodules"
-git submodule update --init --recursive --remote || { echo "submodule update failed"; exit 1; }
+# git submodule update --init --recursive --remote || { echo "submodule update failed"; exit 1; }
+git submodule update --init --recursive || { echo "submodule init failed"; exit 1; }
 
 if [ -d "immortalwrt" ]; then
     echo "repo dir exists"
@@ -20,13 +21,22 @@ else
 fi
 
 # reset to 8f6bf3907696dc7de78d1da5e25e0fda223497e8 due to framebuffer compatibility issue
-git reset --hard 8f6bf3907696dc7de78d1da5e25e0fda223497e8
+# git reset --hard 8f6bf3907696dc7de78d1da5e25e0fda223497e8
+
+echo "Lock Kernel version to 6.6.119"
+echo "LINUX_VERSION-6.6 = .119" > include/kernel-6.6
+echo "LINUX_KERNEL_HASH-6.6.119 = 3da09b980bb404cc28793479bb2d6c636522679215ffa65a04c893575253e5e8" >> include/kernel-6.6
+
+echo "Reset kernel patches to 6.6.119 state"
+# git checkout 581050ce4e1f28a8e371cbd090f48945e02d4448 -- target/linux/rockchip/patches-6.6/
+git restore --source=c434d02009649241e58e615d8c0666730bf01655 target/linux/generic/
+git restore --source=c434d02009649241e58e615d8c0666730bf01655 target/linux/rockchip/
 
 echo "add feeds"
 cat feeds.conf.default > feeds.conf
 echo "" >> feeds.conf
 # echo "src-git qmodem https://github.com/FUjr/QModem.git;main" >> feeds.conf
-echo "src-git qmodem https://github.com/zzzz0317/QModem.git;v2.8.11" >> feeds.conf
+echo "src-git qmodem https://github.com/zzzz0317/QModem.git;v3.0.1" >> feeds.conf
 echo "src-git istore https://github.com/linkease/istore;main" >> feeds.conf
 echo "update files"
 rm -rf files
@@ -46,6 +56,10 @@ echo "add TD-TECH option id patch"
 cp ../999-add-TD-TECH-option-id.patch ./target/linux/rockchip/patches-6.6/999-add-TD-TECH-option-id.patch
 ls -lah ./target/linux/rockchip/patches-6.6/999-add-TD-TECH-option-id.patch
 
+if [ -f "feeds/packages/lang/rust/Makefile" ]; then
+   bash -c "cd feeds/packages && git checkout -- \"lang/rust/Makefile\""
+fi
+
 echo "update feeds"
 ./scripts/feeds update -a || { echo "update feeds failed"; exit 1; }
 echo "install feeds"
@@ -63,7 +77,7 @@ else
     echo "Created symlink package/zz-packages -> ../../zz-packages"
 fi
 
-echo "Fix Rust build remove CI LLVM download"
-if [ -f "feeds/packages/lang/rust/Makefile" ]; then
-    sed -i 's/download-ci-llvm=true/download-ci-llvm=false/g' "feeds/packages/lang/rust/Makefile"
-fi
+# echo "Fix Rust build remove CI LLVM download"
+# if [ -f "feeds/packages/lang/rust/Makefile" ]; then
+#     sed -i 's/download-ci-llvm=true/download-ci-llvm=false/g' "feeds/packages/lang/rust/Makefile"
+# fi
